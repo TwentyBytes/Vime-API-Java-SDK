@@ -155,7 +155,7 @@ public class PlasmoVimeAPI {
 
     public VimeUser[] getOnlineStaff() {
 
-        String answer = getRequest("/online/staff");
+        String answer = getRequest("online/staff");
 
         JSONTokener tokener = new JSONTokener(answer);
         JSONArray array = new JSONArray(tokener);
@@ -176,7 +176,7 @@ public class PlasmoVimeAPI {
 
     public Matches.FullMatch getMatch(int matchID) {
 
-        String answer = getRequest("/match/" + matchID);
+        String answer = getRequest("match/" + matchID);
 
         JSONTokener tokener = new JSONTokener(answer);
         JSONObject object = new JSONObject(tokener);
@@ -208,7 +208,7 @@ public class PlasmoVimeAPI {
         if (offset > 2000)
             throw new IllegalArgumentException("Max offset = 2000");
 
-        String answer = getRequest("/user/" + id + "/matches");
+        String answer = getRequest("user/" + id + "/matches");
 
         JSONTokener tokener = new JSONTokener(answer);
         JSONObject object = new JSONObject(tokener);
@@ -283,7 +283,7 @@ public class PlasmoVimeAPI {
 
     public Achievements.List getAchievementsList() {
 
-        String answer = getRequest("/misc/achievements");
+        String answer = getRequest("misc/achievements");
 
         JSONTokener tokener = new JSONTokener(answer);
         JSONObject object = new JSONObject(tokener);
@@ -395,7 +395,7 @@ public class PlasmoVimeAPI {
 
     public Statistic getStatistic(int id) {
 
-        String answer = getRequest("/user/" + id + "/stats");
+        String answer = getRequest("user/" + id + "/stats");
 
         JSONTokener tokener = new JSONTokener(answer);
         JSONObject object = new JSONObject(tokener);
@@ -427,7 +427,7 @@ public class PlasmoVimeAPI {
 
     public Guild getGuildFromID(int id) {
 
-        String answer = getRequest("/guild/get?id=" + id);
+        String answer = getRequest("guild/get?id=" + id);
 
         JSONTokener tokener = new JSONTokener(answer);
 
@@ -437,7 +437,7 @@ public class PlasmoVimeAPI {
 
     public Guild getGuildFromTag(String tag) {
 
-        String answer = getRequest("/guild/get?tag=" + tag);
+        String answer = getRequest("guild/get?tag=" + tag);
 
         JSONTokener tokener = new JSONTokener(answer);
 
@@ -447,7 +447,7 @@ public class PlasmoVimeAPI {
 
     public Guild getGuildFromName(String name) {
 
-        String answer = getRequest("/guild/get?name=" + name);
+        String answer = getRequest("guild/get?name=" + name.replace(" ", "%20"));
 
         JSONTokener tokener = new JSONTokener(answer);
 
@@ -457,7 +457,7 @@ public class PlasmoVimeAPI {
 
     public Guild[] searchGuilds(String nameOrTag) {
 
-        String answer = getRequest("/guild/search?query=" + nameOrTag);
+        String answer = getRequest("guild/search?query=" + nameOrTag.replace(" ", "%20"));
 
         JSONTokener tokener = new JSONTokener(answer);
         JSONArray array = new JSONArray(tokener);
@@ -481,7 +481,7 @@ public class PlasmoVimeAPI {
 
     public LeaderBoard getLeaderBoard(String type) {
 
-        String answer = getRequest("/leaderboard/get/" + type);
+        String answer = getRequest("leaderboard/get/" + type);
 
         JSONTokener tokener = new JSONTokener(answer);
         JSONObject object = new JSONObject(tokener);
@@ -504,7 +504,7 @@ public class PlasmoVimeAPI {
 
     public LeaderBoard getLeaderBoard(String type, String sort) {
 
-        String answer = getRequest("/leaderboard/get/" + type + "/" + sort);
+        String answer = getRequest("leaderboard/get/" + type + "/" + sort);
 
         JSONTokener tokener = new JSONTokener(answer);
         JSONObject object = new JSONObject(tokener);
@@ -527,7 +527,7 @@ public class PlasmoVimeAPI {
 
     public Online[] getOnline() {
 
-        String answer = getRequest("/online");
+        String answer = getRequest("online");
 
         JSONTokener tokener = new JSONTokener(answer);
         JSONObject object = new JSONObject(tokener);
@@ -593,7 +593,7 @@ public class PlasmoVimeAPI {
 
     public Stream[] getStreams() {
 
-        String answer = getRequest("/online/streams");
+        String answer = getRequest("online/streams");
 
         JSONTokener tokener = new JSONTokener(answer);
         JSONArray array = new JSONArray(tokener);
@@ -621,7 +621,7 @@ public class PlasmoVimeAPI {
         else if (amount < 1)
             throw new IllegalArgumentException("Min amount = 1");
 
-        String answer = getRequest("/match/latest?count=" + amount);
+        String answer = getRequest("match/latest?count=" + amount);
 
         JSONTokener tokener = new JSONTokener(answer);
         JSONArray array = new JSONArray(tokener);
@@ -660,7 +660,7 @@ public class PlasmoVimeAPI {
 
     public LeaderBoard.List getLeaderBoardsList() {
 
-        String answer = getRequest("/leaderboard/list");
+        String answer = getRequest("leaderboard/list");
 
         JSONTokener tokener = new JSONTokener(answer);
         JSONArray array = new JSONArray(tokener);
@@ -755,23 +755,7 @@ public class PlasmoVimeAPI {
 
     private String getRequest(String request) {
 
-        if (!this.limit.remained())
-            throw new APICallException(2, "API rate limit exceeded for your IP (token rate).");
-
-        String answer = requestToString(new HttpGet(API_URL + request + (this.token == null ? "" : "?token=" + this.token)));
-
-        if (answer.contains("error")) {
-
-            JSONTokener tokener = new JSONTokener(answer);
-            JSONObject object = new JSONObject(tokener);
-
-            JSONObject error = object.optJSONObject("error");
-
-            throw new APICallException(error.optInt("error_code"), error.optString("error_msg"));
-
-        }
-
-        return answer;
+        return requestToString(new HttpGet(API_URL + request + (this.token == null ? "" : "?token=" + this.token)));
 
     }
 
@@ -779,10 +763,24 @@ public class PlasmoVimeAPI {
 
         try {
 
+            if (!this.limit.remained())
+                throw new APICallException(2, "API rate limit exceeded for your IP (token rate).");
+
             String answer = EntityUtils.toString(this.client.execute(request).getEntity());
 
             if (answer == null)
                 throw new IllegalArgumentException("Answer is null.");
+
+            if (answer.contains("error")) {
+
+                JSONTokener tokener = new JSONTokener(answer);
+                JSONObject object = new JSONObject(tokener);
+
+                JSONObject error = object.optJSONObject("error");
+
+                throw new APICallException(error.optInt("error_code"), error.optString("error_msg"));
+
+            }
 
             return answer;
 
