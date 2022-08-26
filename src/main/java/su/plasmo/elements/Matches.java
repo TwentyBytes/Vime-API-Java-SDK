@@ -1,37 +1,43 @@
 package su.plasmo.elements;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.experimental.FieldDefaults;
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONObject;
 
 @Getter
 @AllArgsConstructor
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class Matches {
 
-    @Nullable private VimeUser user;
-    private Match[] matches;
+    @Nullable
+    VimeUser user;
+    Match[] matches;
 
     //skipped matches count
-    private int offset;
+    int offset;
 
     @Getter
     @AllArgsConstructor
+    @FieldDefaults(level = AccessLevel.PRIVATE)
     public static class Match {
 
-        @Nullable private VimeUser user;
+        @Nullable
+        VimeUser user;
 
-        private long id;
-        private String game;
-        private long date;
-        private int duration;
+        long id;
+        String game;
+        long date;
+        int duration;
 
-        @Nullable private MatchMap map;
+        @Nullable
+        MatchMap map;
 
-        private JSONObject optionalParams;
+        JSONObject optionalParams;
 
-        public Match(long id, String game, long date, int duration, MatchMap matchMap, JSONObject optionalParams) {
-
+        public Match(long id, String game, long date, int duration, @Nullable MatchMap matchMap, JSONObject optionalParams) {
             this.id = id;
             this.game = game;
             this.date = date;
@@ -40,17 +46,17 @@ public class Matches {
             this.map = matchMap;
 
             this.optionalParams = optionalParams;
-
         }
 
         @Getter
         @AllArgsConstructor
+        @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
         public static class MatchMap {
 
-            private String id;
-            private String name;
-            private int teams;
-            private int playersInTeam;
+            String id;
+            String name;
+            int teams;
+            int playersInTeam;
 
         }
 

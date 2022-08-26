@@ -1,25 +1,33 @@
 package su.plasmo.elements;
 
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.jetbrains.annotations.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class VimeUser {
 
-    private String username;
-    private int id, level, playedSeconds;
-    private float levelPercentage;
-    private Rank rank;
-    private long lastSeen;
+    String username;
+    int id;
+    int level;
+    int playedSeconds;
+    float levelPercentage;
+    Rank rank;
+    long lastSeen;
     //будет null если вы получаете друзей какого либо игрока
-    @Nullable private Session session;
+    @Nullable
+    Session session;
     //будет null если игрок не состоит в гильдии
-    @Nullable private Guild guild;
+    @Nullable
+    Guild guild;
 
     @Getter
     @AllArgsConstructor
+    @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
     public enum Rank {
 
         PLAYER("Игрок", "", "", "&7"),
@@ -37,19 +45,18 @@ public class VimeUser {
         CHIEF("Главный модератор","[Гл. модер]", "#1b00ff", "&9"),
         ADMIN("Главный админ","[Гл. админ]", "#00bebe", "&b&l");
 
-        private String chatForm, prefix, color, minecraftColor;
+        String chatForm;
+        String prefix;
+        String color;
+        String minecraftColor;
 
         public static Rank get(String name) {
-
             for (Rank rank : values()) {
-
-                if (rank.name().equalsIgnoreCase(name))
+                if (rank.name().equalsIgnoreCase(name)) {
                     return rank;
-
+                }
             }
-
             return Rank.PLAYER;
-
         }
 
     }

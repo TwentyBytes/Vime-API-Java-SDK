@@ -1,33 +1,38 @@
 package su.plasmo.elements;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.experimental.FieldDefaults;
 
 @Getter
 @AllArgsConstructor
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class LeaderBoard {
 
-    private String type;
-    private String sort;
-    private int offset;
-    private int maxSize;
+    String type;
+    String sort;
+    int offset;
+    int maxSize;
 
-    private VimeUser[] records;
+    VimeUser[] records;
 
     @Getter
     @AllArgsConstructor
+    @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
     public static class List {
 
-        private ListLeaderBoard[] boards;
+        ListLeaderBoard[] boards;
 
         @Getter
         @AllArgsConstructor
+        @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
         public static class ListLeaderBoard {
 
-            private String type;
-            private String description;
-            private int maxSize;
-            private String[] sorts;
+            String type;
+            String description;
+            int maxSize;
+            String[] sorts;
 
         }
 
@@ -35,18 +40,20 @@ public class LeaderBoard {
 
     @Getter
     @AllArgsConstructor
+    @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
     public static class UserLeaderBoards {
 
-        private VimeUser user;
-        private UserLeaderBoard[] leaderBoard;
+        VimeUser user;
+        UserLeaderBoard[] leaderBoard;
 
         @Getter
         @AllArgsConstructor
+        @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
         public static class UserLeaderBoard {
 
-            private String type;
-            private String sort;
-            private int place;
+            String type;
+            String sort;
+            int place;
 
         }
 

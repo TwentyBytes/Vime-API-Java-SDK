@@ -1,23 +1,27 @@
 package su.plasmo.elements;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.experimental.FieldDefaults;
 import org.json.JSONObject;
 
 import java.util.Map;
 
 @Getter
 @AllArgsConstructor
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class Maps {
 
-    private GameMaps[] games;
+    GameMaps[] games;
 
     @Getter
     @AllArgsConstructor
+    @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
     public static class GameMaps {
 
-        private String game;
-        private Map<String, JSONObject> maps;
+        String game;
+        Map<String, JSONObject> maps;
 
     }
 

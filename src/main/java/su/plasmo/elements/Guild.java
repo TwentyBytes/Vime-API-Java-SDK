@@ -1,31 +1,33 @@
 package su.plasmo.elements;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.experimental.FieldDefaults;
 
 @Getter
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Guild {
 
-    private int id;
-    private String name;
-    private String tag;
-    private String color;
-    private int level;
-    private float levelPercentage;
-    private String avatarUrl;
-    private long totalExp;
-    private long totalCoins;
-    private long created;
-    private String webInfo;
-    private Perk[] perks;
-    private GuildUser[] members;
+    int id;
+    String name;
+    String tag;
+    String color;
+    int level;
+    float levelPercentage;
+    String avatarUrl;
+    long totalExp;
+    long totalCoins;
+    long created;
+    String webInfo;
+    Perk[] perks;
+    GuildUser[] members;
 
     //loaded all params or not
-    private boolean mini;
+    boolean mini;
 
     public Guild(int id, String name, String tag, String color, int level, float levelPercentage, String avatarUrl) {
-
         this.id = id;
         this.name = name;
         this.tag = tag;
@@ -35,18 +37,18 @@ public class Guild {
         this.avatarUrl = avatarUrl;
 
         this.mini = true;
-
     }
 
     @Getter
     @AllArgsConstructor
+    @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
     public static class GuildUser {
 
-        private VimeUser user;
-        private GuildRank status;
-        private long joined;
-        private long guildCoins;
-        private long guildExp;
+        VimeUser user;
+        GuildRank status;
+        long joined;
+        long guildCoins;
+        long guildExp;
 
     }
 
@@ -57,27 +59,25 @@ public class Guild {
         LEADER;
 
         public static GuildRank get(String name) {
-
             for (GuildRank rank : values()) {
-
-                if (rank.name().equalsIgnoreCase(name))
+                if (rank.name().equalsIgnoreCase(name)) {
                     return rank;
-
+                }
             }
 
             return MEMBER;
-
         }
 
     }
 
     @Getter
     @AllArgsConstructor
+    @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
     public static class Perk {
 
-        private String name;
-        private String message;
-        private int level;
+        String name;
+        String message;
+        int level;
 
     }
 
