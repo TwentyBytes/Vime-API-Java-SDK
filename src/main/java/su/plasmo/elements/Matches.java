@@ -1,8 +1,6 @@
 package su.plasmo.elements;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONObject;
@@ -10,6 +8,8 @@ import org.json.JSONObject;
 @Getter
 @AllArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+@ToString
+@EqualsAndHashCode
 public class Matches {
 
     @Nullable
@@ -22,6 +22,8 @@ public class Matches {
     @Getter
     @AllArgsConstructor
     @FieldDefaults(level = AccessLevel.PRIVATE)
+    @ToString
+    @EqualsAndHashCode
     public static class Match {
 
         @Nullable
@@ -51,6 +53,8 @@ public class Matches {
         @Getter
         @AllArgsConstructor
         @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+        @ToString
+        @EqualsAndHashCode
         public static class MatchMap {
 
             String id;
@@ -64,23 +68,28 @@ public class Matches {
 
     /**
      * Отдельный класс создан тут потому что rest-api вайма
-     *              выдает разные названия у одних и тех же полей. Именно в матчах. Я не знаю
-     *              НАХЕРА они это сделали, но пусть будет так.
+     * выдает разные названия у одних и тех же полей. Именно в матчах. Я не знаю
+     * НАХЕРА они это сделали, но пусть будет так.
      */
     @Getter
     @AllArgsConstructor
+    @ToString
+    @EqualsAndHashCode
+    @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
     public static class FullMatch {
 
-        private int version;
-        private String game;
-        private String server;
-        private long start;
-        private long end;
+        int version;
+        String game;
+        String server;
+        long start;
+        long end;
 
-        @Nullable private String mapName;
-        @Nullable private String mapId;
+        @Nullable
+        String mapName;
+        @Nullable
+        String mapId;
 
-        private JSONObject optionalParams;
+        JSONObject optionalParams;
 
     }
 

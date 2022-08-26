@@ -1,14 +1,14 @@
 package su.plasmo.elements;
 
-import lombok.AccessLevel;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.jetbrains.annotations.Nullable;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@ToString
+@EqualsAndHashCode
 public class VimeUser {
 
     String username;

@@ -1,10 +1,8 @@
 package su.plasmo.elements;
 
-import lombok.AccessLevel;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.jetbrains.annotations.Nullable;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 import org.json.JSONObject;
 
 import java.util.Map;
@@ -12,6 +10,8 @@ import java.util.Map;
 @Getter
 @AllArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+@ToString
+@EqualsAndHashCode
 public class Statistic {
 
     VimeUser user;

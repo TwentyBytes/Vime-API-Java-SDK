@@ -1,8 +1,6 @@
 package su.plasmo.elements;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.json.JSONObject;
 
@@ -11,6 +9,8 @@ import java.util.Map;
 @Getter
 @AllArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+@ToString
+@EqualsAndHashCode
 public class Maps {
 
     GameMaps[] games;
@@ -18,6 +18,8 @@ public class Maps {
     @Getter
     @AllArgsConstructor
     @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+    @ToString
+    @EqualsAndHashCode
     public static class GameMaps {
 
         String game;

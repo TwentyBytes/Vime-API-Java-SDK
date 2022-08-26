@@ -1,8 +1,6 @@
 package su.plasmo.elements;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.jetbrains.annotations.Nullable;
 
@@ -11,6 +9,8 @@ import java.util.Map;
 @Getter
 @AllArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+@ToString
+@EqualsAndHashCode
 public class Achievements {
 
     VimeUser user;
@@ -19,6 +19,8 @@ public class Achievements {
     @Getter
     @AllArgsConstructor
     @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+    @ToString
+    @EqualsAndHashCode
     public static class Achievement {
 
         int id;
@@ -29,6 +31,8 @@ public class Achievements {
     @Getter
     @AllArgsConstructor
     @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+    @ToString
+    @EqualsAndHashCode
     public static class List {
 
         Map<Integer, ListAchievement> achievements;
@@ -36,6 +40,8 @@ public class Achievements {
         @Getter
         @AllArgsConstructor
         @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+        @ToString
+        @EqualsAndHashCode
         public static class ListAchievement {
 
             int id;

@@ -1,13 +1,13 @@
 package su.plasmo.elements;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Getter
 @AllArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+@ToString
+@EqualsAndHashCode
 public class Stream {
 
     String owner;

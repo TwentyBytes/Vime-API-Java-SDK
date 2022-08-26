@@ -1,13 +1,13 @@
 package su.plasmo.elements;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Getter
 @AllArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+@ToString
+@EqualsAndHashCode
 public class LeaderBoard {
 
     String type;
@@ -20,6 +20,8 @@ public class LeaderBoard {
     @Getter
     @AllArgsConstructor
     @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+    @ToString
+    @EqualsAndHashCode
     public static class List {
 
         ListLeaderBoard[] boards;
@@ -27,6 +29,8 @@ public class LeaderBoard {
         @Getter
         @AllArgsConstructor
         @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+        @ToString
+        @EqualsAndHashCode
         public static class ListLeaderBoard {
 
             String type;
@@ -41,6 +45,8 @@ public class LeaderBoard {
     @Getter
     @AllArgsConstructor
     @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+    @ToString
+    @EqualsAndHashCode
     public static class UserLeaderBoards {
 
         VimeUser user;
@@ -49,6 +55,8 @@ public class LeaderBoard {
         @Getter
         @AllArgsConstructor
         @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+        @ToString
+        @EqualsAndHashCode
         public static class UserLeaderBoard {
 
             String type;
