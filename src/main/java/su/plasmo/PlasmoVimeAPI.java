@@ -36,6 +36,12 @@ public class PlasmoVimeAPI {
         this.requester = new HTTPRequester(token);
     }
 
+    /**
+     * Получение пользователя по ID.
+     *
+     * @param id - id пользователя.
+     * @return VimeUser instance - пользователь.
+     */
     public VimeUser getUser(int id) {
         String answer = requester.GET("user/" + id);
 
@@ -46,6 +52,13 @@ public class PlasmoVimeAPI {
         return parseUser(object);
     }
 
+
+    /**
+     * Получение пользователя по нику.
+     *
+     * @param name - ник пользователя.
+     * @return VimeUser instance - пользователь.
+     */
     public VimeUser getUser(String name) {
         String answer = requester.GET("user/name/" + name);
 
@@ -55,6 +68,14 @@ public class PlasmoVimeAPI {
         return parseUser(array.optJSONObject(0));
     }
 
+    /**
+     * Получение нескольких пользователей по id.
+     *
+     * @param ids - массив id получаемых пользователей.
+     *            Не больше 1000 за раз
+     *            и не меньше 1.
+     * @return Массив VimeUser - пользователей.
+     */
     @SneakyThrows
     public VimeUser[] getUsers(int... ids) {
         if (ids.length > 1000) {
@@ -86,6 +107,14 @@ public class PlasmoVimeAPI {
         return users;
     }
 
+    /**
+     * Получение нескольких пользователей по id.
+     *
+     * @param names - массив ников получаемых пользователей.
+     *            Не больше 50 за раз
+     *            и не меньше 1.
+     * @return Массив VimeUser - пользователей.
+     */
     public VimeUser[] getUsers(String... names) {
         if (names.length > 50) {
             throw new IllegalArgumentException("Max users amount 50");
@@ -116,6 +145,11 @@ public class PlasmoVimeAPI {
         return users;
     }
 
+    /**
+     * Получение всех стафф-юзеров (админы, модеры и др.)
+     *
+     * @return Массив VimeUser - пользователей.
+     */
     public VimeUser[] getOnlineStaff() {
         String answer = requester.GET("online/staff");
 
@@ -134,23 +168,52 @@ public class PlasmoVimeAPI {
         return users;
     }
 
+    /**
+     * Получение матча по ID.
+     *
+     * @param matchID - id матча.
+     * @return Матч.
+     */
     public Matches.FullMatch getMatch(int matchID) {
         String answer = requester.GET("match/" + matchID);
 
         JSONTokener tokener = new JSONTokener(answer);
         JSONObject object = new JSONObject(tokener);
 
-        return new Matches.FullMatch(object.optInt("version"), object.optString("game"), object.optString("server"), object.optLong("start"), object.optLong("end"), object.optString("mapName"), object.optString("mapId"), object);
+        return new Matches.FullMatch(object.optInt("version"), object.optString("game"), object.optString("server"), object.optLong("start"), object.optLong("end"), object.optString("mapName"), object.optString("mapId"),
+                object.has("owned"), object);
     }
 
+    /**
+     * Получение последних 20 матчей пользователя.
+     *
+     * @param id - id пользователя.
+     * @return Матчи.
+     */
     public Matches getUserMatches(int id) {
         return getUserMatches(id, 20, 0);
     }
 
+    /**
+     * Получение матчей пользователя.
+     *
+     * @param id - id пользователя.
+     * @param amount - количество получаемых матчей.
+     * @return Матчи.
+     */
     public Matches getUserMatches(int id, int amount) {
         return getUserMatches(id, amount, 0);
     }
 
+    /**
+     * Получение матчей пользователя.
+     *
+     * @param id - id пользователя.
+     * @param amount - количество получаемых матчей.
+     * @param offset - сколько матчей нужно пропустить (от начала списка).
+     *              Максимум 2000.
+     * @return Матчи.
+     */
     @Nullable
     public Matches getUserMatches(int id, int amount, int offset) {
         if (amount > 50) {
@@ -194,6 +257,12 @@ public class PlasmoVimeAPI {
         return new Matches(user, requestedMatches, skipped);
     }
 
+    /**
+     * Получение достижений пользователя.
+     *
+     * @param id - ID пользователя.
+     * @return достижения.
+     */
     @Nullable
     public Achievements getAchievements(int id) {
         String answer = requester.GET("user/" + id + "/achievements");
@@ -221,6 +290,13 @@ public class PlasmoVimeAPI {
         return new Achievements(user, achievements);
     }
 
+
+    /**
+     * Получение достижений пользователя.
+     *
+     * @param user - пользователь.
+     * @return Достижения пользователя.
+     */
     public Achievements getAchievements(VimeUser user) {
         return getAchievements(user.getId());
     }
@@ -257,6 +333,12 @@ public class PlasmoVimeAPI {
         return new Achievements.List(achievements);
     }
 
+    /**
+     * Получение друзей пользователя.
+     *
+     * @param id - ID пользователя.
+     * @return Друзья пользователя.
+     */
     @Nullable
     public Friends getUserFriends(int id) {
         String answer = requester.GET("user/" + id + "/friends");
@@ -282,10 +364,22 @@ public class PlasmoVimeAPI {
 
     }
 
+    /**
+     * Получение друзей пользователя.
+     *
+     * @param user - пользователь.
+     * @return Друзья пользователя.
+     */
     public Friends getUserFriends(VimeUser user) {
         return getUserFriends(user.getId());
     }
 
+    /**
+     * Получение списка всех топов в которых есть указанный пользователь.
+     *
+     * @param id - ID пользователя.
+     * @return Список топов.
+     */
     @Nullable
     public LeaderBoard.UserLeaderBoards getUserLeaderBoards(int id) {
         String answer = requester.GET("user/" + id + "/leaderboards");
@@ -314,10 +408,22 @@ public class PlasmoVimeAPI {
         return new LeaderBoard.UserLeaderBoards(user, boards);
     }
 
+    /**
+     * Получение списка всех топов в которых есть указанный пользователь.
+     *
+     * @param user - пользователь.
+     * @return Список топов.
+     */
     public LeaderBoard.UserLeaderBoards getUserLeaderBoards(VimeUser user) {
         return getUserLeaderBoards(user.getId());
     }
 
+    /**
+     * Получение статистики пользователь.
+     *
+     * @param id - ID пользователя.
+     * @return Статистика пользователя.
+     */
     public Statistic getStatistic(int id) {
         String answer = requester.GET("user/" + id + "/stats");
 
@@ -340,10 +446,23 @@ public class PlasmoVimeAPI {
         return new Statistic(user, games);
     }
 
+
+    /**
+     * Получение статистики пользователь.
+     *
+     * @param user - пользователь.
+     * @return Статистика пользователя.
+     */
     public Statistic getStatistic(VimeUser user) {
         return getStatistic(user.getId());
     }
 
+    /**
+     * Получение гильдии по ID.
+     *
+     * @param id - ID гильдии.
+     * @return Гильдия.
+     */
     public Guild getGuildFromID(int id) {
         String answer = requester.GET("guild/get?id=" + id);
 
@@ -352,18 +471,37 @@ public class PlasmoVimeAPI {
         return parseGuild(new JSONObject(tokener));
     }
 
+    /**
+     * Получение гильдии по тегу.
+     *
+     * @param tag - тег гильдии.
+     * @return Гильдия.
+     */
     public Guild getGuildFromTag(String tag) {
         String answer = requester.GET("guild/get?tag=" + tag);
         JSONTokener tokener = new JSONTokener(answer);
         return parseGuild(new JSONObject(tokener));
     }
 
+    /**
+     * Получение гильдии по названию.
+     *
+     * @param name - название гильдии.
+     * @return Гильдия.
+     */
     public Guild getGuildFromName(String name) {
         String answer = requester.GET("guild/get?name=" + name.replace(" ", "%20"));
         JSONTokener tokener = new JSONTokener(answer);
         return parseGuild(new JSONObject(tokener));
     }
 
+    /**
+     * Поиск гильдий по заданному параметру.
+     * Параметр может быть как и названием искомой гильдии, так и тегом.
+     *
+     * @param nameOrTag - Имя или тег.
+     * @return Массив найденных гильдий по заданным данным.
+     */
     public Guild[] searchGuilds(String nameOrTag) {
         String answer = requester.GET("guild/search?query=" + nameOrTag.replace(" ", "%20"));
 
@@ -384,6 +522,15 @@ public class PlasmoVimeAPI {
         return guilds;
     }
 
+    /**
+     * Получение топа по указанному ID (типу).
+     *
+     * Типы всех топов можно получить с помощью метода
+     * {@link #getLeaderBoardsList()}
+     *
+     * @param type - тип (ID)
+     * @return Топ.
+     */
     public LeaderBoard getLeaderBoard(String type) {
         String answer = requester.GET("leaderboard/get/" + type);
 
@@ -403,6 +550,17 @@ public class PlasmoVimeAPI {
         return new LeaderBoard(board.optString("type"), board.optString("sort"), board.optInt("offset"), board.optInt("max_size"), users);
     }
 
+    /**
+     * Получение топа по указанному ID (типу)
+     * и по указанной сортировке.
+     *
+     * Типы и сортировки всех топов можно получить с помощью метода
+     * {@link #getLeaderBoardsList()}
+     *
+     * @param type - тип (ID)
+     * @param sort - сортировка.
+     * @return Топ.
+     */
     public LeaderBoard getLeaderBoard(String type, String sort) {
         String answer = requester.GET("leaderboard/get/" + type + "/" + sort);
 
@@ -424,6 +582,12 @@ public class PlasmoVimeAPI {
         return new LeaderBoard(board.optString("type"), board.optString("sort"), board.optInt("offset"), board.optInt("max_size"), users);
     }
 
+
+    /**
+     * Получение онлайнов на всех режимах.
+     *
+     * @return Массив с онлайнами на всех режимах, а так-же общий total онлайн.
+     */
     public Online[] getOnline() {
         String answer = requester.GET("online");
 
@@ -445,6 +609,11 @@ public class PlasmoVimeAPI {
         return online;
     }
 
+    /**
+     * Получение карт всех режимов.
+     *
+     * @return Все карты всех режимов.
+     */
     public Maps getMaps() {
         String answer = requester.GET("misc/maps");
 
@@ -477,6 +646,11 @@ public class PlasmoVimeAPI {
         return new Maps(games);
     }
 
+    /**
+     * Получение всех стримов ютуберов на данный момент.
+     *
+     * @return Массив стримов.
+     */
     public Stream[] getStreams() {
         String answer = requester.GET("online/streams");
 
@@ -496,6 +670,12 @@ public class PlasmoVimeAPI {
         return streams;
     }
 
+    /**
+     * Получение последних сыгранных (уже завершенных не приватных) матчей.
+     *
+     * @param amount - количество получаемых матчей.
+     * @return Матчи в указанном количестве.
+     */
     @Nullable
     public Matches getLatestMatches(int amount) {
         if (amount > 100) {
@@ -532,10 +712,21 @@ public class PlasmoVimeAPI {
         return new Matches(null, requestedMatches, 0);
     }
 
+    /**
+     * Получение последних сыгранных (уже завершенных не приватных) матчей.
+     *
+     * @return 20 последних матчей.
+     */
     public Matches getLatestMatches() {
         return getLatestMatches(20);
     }
 
+    /**
+     * Получение ID всех топов с описанием, максимальным размером и
+     * названием сортировок.
+     *
+     * @return Список всех топов.
+     */
     public LeaderBoard.List getLeaderBoardsList() {
         String answer = requester.GET("leaderboard/list");
 

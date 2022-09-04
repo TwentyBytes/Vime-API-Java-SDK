@@ -1,7 +1,6 @@
 package su.plasmo.throwables;
 
 import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
@@ -11,7 +10,15 @@ import lombok.experimental.FieldDefaults;
 @ToString
 public class APICallException extends RuntimeException {
 
+    /**
+     * ID возникшей ошибки.
+     * Список всех ошибок есть в официальной документации VimeAPI.
+     * https://vimeworld.github.io/api-docs/#commonerrors
+     */
     int errorId;
+    /**
+     * Сопутствующее ошибке сообщение.
+     */
     String message;
 
     public APICallException(int errorId, String message) {

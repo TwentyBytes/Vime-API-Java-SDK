@@ -89,7 +89,14 @@ public class Matches {
         @Nullable
         String mapId;
 
+        // private match or not
+        boolean owned;
+
         JSONObject optionalParams;
+
+        public boolean isPrivate() {
+            return owned;
+        }
 
     }
 
