@@ -1,8 +1,8 @@
-# PlasmoVimeJavaSDK
+# Vime API Java SDK (Legacy)
 
 ---
 
-**PlasmoVimeJavaSDK** - это инструмент разработки написанный на Java для быстрой и удобной работы с VimeWorld API.
+Это инструмент разработки написанный на Java для быстрой и удобной работы с VimeWorld API.
 
 Быстрый старт:
 
