@@ -757,14 +757,10 @@ public class PlasmoVimeAPI {
         Session session;
 
         if (object.has("online")) {
-
             JSONObject onlineObject = object.getJSONObject("online");
             session = new Session(onlineObject.optBoolean("value"), onlineObject.optString("message"), (onlineObject.has("game") ? onlineObject.optString("game") : null));
-
         } else {
-
             session = new Session(false, "Игрок оффлайн");
-
         }
 
         Guild guild = null;
